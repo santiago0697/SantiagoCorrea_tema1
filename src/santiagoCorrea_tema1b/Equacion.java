@@ -17,36 +17,15 @@ class EquPane extends JPanel {
 
 	@Override
 	public void paintComponent(Graphics g) {
-		this.drawAxis(g);
+		Utils.drawAxis(g, this);
 		for (double parabola[] : numbers) {
 			this.drawEquacion(g, parabola[0], parabola[1], parabola[2], -this.getWidth() / 2, this.getWidth() / 2);
 		}
 	}
 
-	private void drawAxis(Graphics g) {
-		int separacion = 20;
-		g.setColor(Color.BLACK);
-		g.drawLine(0, this.getHeight() / 2, this.getWidth(), this.getHeight() / 2);
-		g.drawLine(this.getWidth() / 2, 0, this.getWidth() / 2, this.getHeight());
-
-		/*
-		 * draw X sticks
-		 */
-		for (int i = 0; i <= this.getWidth(); i += separacion) {
-			g.drawLine(i, this.getHeight() / 2 + 3, i, this.getHeight() / 2 - 3);
-		}
-
-		/*
-		 * draw Y sticks
-		 */
-		for (int i = 0; i <= this.getHeight(); i += separacion) {
-			g.drawLine(this.getWidth() / 2 + 3, i, this.getWidth() / 2 - 3, i);
-		}
-	}
-
 	private void drawEquacion(Graphics g, double a, double b, double c, double minX, double maxX) {
 		double escala = 1.1;
-		g.setColor(this.getRandomColor());
+		g.setColor(Utils.getRandomColor());
 		for (double i = minX; i < maxX; i++) {
 			/*
 			 * Formula para sacar los puntos de union entre las lineas
@@ -60,14 +39,6 @@ class EquPane extends JPanel {
 			g.drawLine((int) (realX(i) * escala), (int) (realY(y) * escala), (int) (realX(xp) * escala),
 					(int) (realY(yp) * escala));
 		}
-	}
-
-	private Color getRandomColor() {
-		int r = ThreadLocalRandom.current().nextInt(1, 256);
-		int g = ThreadLocalRandom.current().nextInt(1, 256);
-		int b = ThreadLocalRandom.current().nextInt(1, 256);
-
-		return new Color(r, g, b);
 	}
 
 	/*
@@ -96,6 +67,7 @@ public class Equacion extends JFrame {
 	 * Jframe attributes and
 	 */
 	private void init() {
+		super.setResizable(false);
 		super.setSize((int) windowBounds.getX(), (int) windowBounds.getY());
 		super.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		super.setVisible(true);
